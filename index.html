@@ -10,10 +10,10 @@
             theme: {
                 extend: {
                     colors: {
-                        'lavender': '#E6E6FA',
-                        'rose-pink': '#F8BBD9',
-                        'deep-lavender': '#9370DB',
-                        'deep-rose': '#E91E63'
+                        'violet': '#7C3AED',
+                        'lavender': '#E9D5FF',
+                        'light-lavender': '#F3E8FF',
+                        'dark-violet': '#5B21B6'
                     }
                 }
             }
@@ -21,34 +21,43 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-bg {
-            background: linear-gradient(135deg, #E6E6FA 0%, #F8BBD9 100%);
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
         }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #E9D5FF 0%, #F3E8FF 50%, #E9D5FF 100%);
+        }
+        
         .card-hover {
             transition: all 0.3s ease;
         }
+        
         .card-hover:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.15);
         }
+        
         .edit-mode {
-            border: 2px dashed #9370DB;
+            border: 2px dashed #7C3AED;
             min-height: 50px;
             padding: 10px;
             position: relative;
         }
+        
         .edit-mode::after {
             content: "✏️ Click to edit";
             position: absolute;
             top: -25px;
             right: 0;
-            background: #9370DB;
+            background: #7C3AED;
             color: white;
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 12px;
         }
+        
         .hidden { display: none; }
         
         /* Lightbox Styles */
@@ -64,16 +73,19 @@
             align-items: center;
             justify-content: center;
         }
+        
         .lightbox-content {
             max-width: 90%;
             max-height: 90%;
             position: relative;
         }
-        .lightbox img {
+        
+        .lightbox img, .lightbox iframe {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
+        
         .lightbox-close {
             position: absolute;
             top: -40px;
@@ -89,92 +101,112 @@
             align-items: center;
             justify-content: center;
         }
-        .lightbox-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-            background: rgba(0, 0, 0, 0.5);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .lightbox-prev { left: -60px; }
-        .lightbox-next { right: -60px; }
         
         /* Gallery Grid */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        .gallery-item {
-            aspect-ratio: 1;
-            overflow: hidden;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
         
-        /* File Upload Styles */
-        .file-upload {
-            border: 2px dashed #9370DB;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
+        .project-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.1);
             transition: all 0.3s ease;
         }
-        .file-upload:hover {
-            background: rgba(147, 112, 219, 0.1);
+        
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
         }
-        .file-upload.dragover {
-            background: rgba(147, 112, 219, 0.2);
-            border-color: #E91E63;
+        
+        .project-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #E9D5FF, #F3E8FF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            position: relative;
+        }
+        
+        .btn-disabled:hover::after {
+            content: "Coming Soon";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #374151;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
         }
         
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .lightbox-nav {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-            .lightbox-prev { left: -50px; }
-            .lightbox-next { right: -50px; }
             .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-template-columns: 1fr;
+            }
+            
+            .project-thumbnail {
+                height: 150px;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (min-width: 1400px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
     </style>
 </head>
 <body class="gradient-bg min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-white/80 backdrop-blur-md shadow-lg sticky top-0 z-50">
+    <nav class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
-                <div class="text-2xl font-bold text-deep-lavender">Humaira Liju</div>
+                <div class="text-2xl font-bold text-violet">Humaira Liju</div>
                 <div class="hidden md:flex space-x-8">
-                    <button onclick="showPage('home')" class="nav-btn text-gray-700 hover:text-deep-lavender transition-colors">Home</button>
-                    <button onclick="showPage('projects')" class="nav-btn text-gray-700 hover:text-deep-lavender transition-colors">Projects & Certificates</button>
-                    <button onclick="showPage('contact')" class="nav-btn text-gray-700 hover:text-deep-lavender transition-colors">References & Contact</button>
+                    <a href="#home" onclick="showPage('home')" class="nav-btn text-gray-700 hover:text-violet transition-colors">Home</a>
+                    <a href="#about" onclick="showPage('home')" class="nav-btn text-gray-700 hover:text-violet transition-colors">About</a>
+                    <a href="#portfolio" onclick="showPage('portfolio')" class="nav-btn text-gray-700 hover:text-violet transition-colors">Portfolio</a>
+                    <a href="#certificates" onclick="showPage('certificates')" class="nav-btn text-gray-700 hover:text-violet transition-colors">Certificates</a>
+                    <a href="#contact" onclick="showPage('contact')" class="nav-btn text-gray-700 hover:text-violet transition-colors">Contact</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button id="loginBtn" onclick="toggleLogin()" class="bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Login</button>
-                    <button id="editBtn" onclick="toggleEditMode()" class="hidden bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">Edit Mode</button>
+                    <button id="loginBtn" onclick="toggleLogin()" class="bg-violet text-white px-4 py-2 rounded-lg hover:bg-dark-violet transition-colors">Login</button>
+                    <button id="editBtn" onclick="toggleEditMode()" class="hidden bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Edit Mode</button>
+                    <button id="adminBtn" onclick="openAdminPanel()" class="hidden bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Admin Panel</button>
                     <button id="logoutBtn" onclick="logout()" class="hidden text-gray-600 hover:text-gray-800">Logout</button>
                 </div>
                 <!-- Mobile menu button -->
@@ -185,135 +217,97 @@
                 </button>
             </div>
             <!-- Mobile menu -->
-            <div id="mobileMenu" class="hidden md:hidden pb-4">
-                <button onclick="showPage('home')" class="block w-full text-left py-2 text-gray-700 hover:text-deep-lavender">Home</button>
-                <button onclick="showPage('projects')" class="block w-full text-left py-2 text-gray-700 hover:text-deep-lavender">Projects & Certificates</button>
-                <button onclick="showPage('contact')" class="block w-full text-left py-2 text-gray-700 hover:text-deep-lavender">References & Contact</button>
+            <div id="mobileMenu" class="hidden md:hidden pb-4 space-y-2">
+                <a href="#home" onclick="showPage('home')" class="block w-full text-left py-2 text-gray-700 hover:text-violet">Home</a>
+                <a href="#about" onclick="showPage('home')" class="block w-full text-left py-2 text-gray-700 hover:text-violet">About</a>
+                <a href="#portfolio" onclick="showPage('portfolio')" class="block w-full text-left py-2 text-gray-700 hover:text-violet">Portfolio</a>
+                <a href="#certificates" onclick="showPage('certificates')" class="block w-full text-left py-2 text-gray-700 hover:text-violet">Certificates</a>
+                <a href="#contact" onclick="showPage('contact')" class="block w-full text-left py-2 text-gray-700 hover:text-violet">Contact</a>
             </div>
         </div>
     </nav>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <h2 class="text-2xl font-bold text-deep-lavender mb-6">Admin Login</h2>
-            <input type="password" id="passwordInput" placeholder="Enter password" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-deep-lavender">
-            <div class="flex space-x-4">
-                <button onclick="login()" class="flex-1 bg-deep-lavender text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">Login</button>
-                <button onclick="closeLoginModal()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition-colors">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Page 1: Homepage -->
+    <!-- Home & About Page -->
     <div id="homePage" class="page">
-        <!-- Hero Section -->
+        <!-- Home Section -->
         <section class="py-20 px-4">
             <div class="max-w-4xl mx-auto text-center">
-                <h1 class="editable text-5xl md:text-6xl font-bold text-deep-lavender mb-6" data-field="name">Humaira Liju</h1>
-                <p class="editable text-xl md:text-2xl text-gray-700 mb-8" data-field="tagline">✨ International Student | Creative Writer | Arts & Crafts Enthusiast ✨</p>
-                <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-                    <p class="text-lg text-gray-700 leading-relaxed mb-8 italic">"Passionate about creativity, storytelling, and learning — building a journey filled with growth, independence, and meaningful contributions."</p>
-                    <h2 class="text-3xl font-semibold text-deep-rose mb-6">About Me</h2>
-                    <p class="editable text-lg text-gray-700 leading-relaxed mb-6" data-field="about">
-                        I am an international student with a deep interest in creativity, culture, and personal growth. I enjoy expressing ideas through writing, designing, and creating unique art pieces.
-                    </p>
-                    <h3 class="text-xl font-semibold text-deep-lavender mb-4">Goals:</h3>
-                    <ul class="text-gray-700 space-y-2 mb-6">
-                        <li>• To build a meaningful career that blends creativity with impact</li>
-                        <li>• To continue learning and exploring opportunities across writing, design, and entrepreneurship</li>
-                        <li>• To contribute positively through volunteering and collaboration with others</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills & Experience Section -->
-        <section class="py-16 px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg mb-16">
-                    <h2 class="text-3xl font-semibold text-deep-rose mb-6 text-center">Skills & Experience</h2>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <span class="text-deep-lavender font-semibold mr-4">•</span>
-                            <div>
-                                <span class="font-semibold text-deep-lavender">Content Writing & Blogging</span>
-                                <span class="text-gray-700"> → Experience writing SEO-friendly articles, lifestyle blogs, and creative content</span>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="text-deep-lavender font-semibold mr-4">•</span>
-                            <div>
-                                <span class="font-semibold text-deep-lavender">Arts & Crafts</span>
-                                <span class="text-gray-700"> → Art & craft business, creating handmade products with passion</span>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="text-deep-lavender font-semibold mr-4">•</span>
-                            <div>
-                                <span class="font-semibold text-deep-lavender">Volunteering</span>
-                                <span class="text-gray-700"> → Actively participated in the Bangladesh Youth Career Club</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Quick Links to Categories -->
-        <section class="py-16 px-4">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-3xl font-bold text-center text-deep-lavender mb-12">Projects & Work Samples</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="card-hover bg-white/70 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg cursor-pointer" onclick="showCategory('blogs')">
+                <h1 class="editable text-5xl md:text-6xl font-bold text-violet mb-6" data-field="name">Humaira Liju</h1>
+                <p class="editable text-xl md:text-2xl text-gray-700 mb-8" data-field="tagline">✨ International Student | Creative Writer | SEO Content Specialist ✨</p>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+                    <div class="card-hover bg-white/70 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg cursor-pointer" onclick="showPage('portfolio')">
                         <div class="text-4xl mb-4">📝</div>
-                        <h3 class="text-xl font-semibold text-deep-lavender mb-2">Blogging & Websites</h3>
-                        <p class="text-gray-600">HumairaStudio and content writing</p>
+                        <h3 class="text-lg font-semibold text-violet mb-2">SEO Writing</h3>
+                        <p class="text-gray-600 text-sm">Professional SEO articles</p>
                     </div>
-                    <div class="card-hover bg-white/70 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg cursor-pointer" onclick="showCategory('crafts')">
-                        <div class="text-4xl mb-4">🎨</div>
-                        <h3 class="text-xl font-semibold text-deep-lavender mb-2">Arts & Crafts</h3>
-                        <p class="text-gray-600">Creative handmade projects, cards, crafts, designs</p>
-                    </div>
-                    <div class="card-hover bg-white/70 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg cursor-pointer" onclick="showCategory('competitions')">
+                    <div class="card-hover bg-white/70 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg cursor-pointer" onclick="showPage('certificates')">
                         <div class="text-4xl mb-4">🏆</div>
-                        <h3 class="text-xl font-semibold text-deep-lavender mb-2">Case Competitions</h3>
-                        <p class="text-gray-600">GoEdu parental writing, business management club</p>
+                        <h3 class="text-lg font-semibold text-violet mb-2">Certificates</h3>
+                        <p class="text-gray-600 text-sm">Professional achievements</p>
                     </div>
-                    <div class="card-hover bg-white/70 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg cursor-pointer" onclick="showCategory('creative')">
-                        <div class="text-4xl mb-4">💡</div>
-                        <h3 class="text-xl font-semibold text-deep-lavender mb-2">Creative Works</h3>
-                        <p class="text-gray-600">Canva design projects and presentations</p>
+                    <div class="card-hover bg-white/70 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg cursor-pointer" onclick="showPage('contact')">
+                        <div class="text-4xl mb-4">📞</div>
+                        <h3 class="text-lg font-semibold text-violet mb-2">Contact</h3>
+                        <p class="text-gray-600 text-sm">Get in touch with me</p>
+                    </div>
+                    <div class="card-hover bg-white/70 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg cursor-pointer" onclick="showPage('contact')">
+                        <div class="text-4xl mb-4">⭐</div>
+                        <h3 class="text-lg font-semibold text-violet mb-2">References</h3>
+                        <p class="text-gray-600 text-sm">Client testimonials</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Certificates Section -->
-        <section class="py-16 px-4">
+        <!-- About Section -->
+        <section class="py-20 px-4 bg-white/30">
             <div class="max-w-4xl mx-auto">
-                <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-                    <h2 class="text-3xl font-semibold text-deep-rose mb-6 text-center">Certificates</h2>
+                <h1 class="text-4xl font-bold text-center text-violet mb-12">About Me</h1>
+                
+                <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg text-left">
+                    <p class="editable text-gray-700 mb-6 text-lg leading-relaxed" data-field="about">
+                        Hello! I'm Humaira Liju, an international student with a passion for SEO content writing and entrepreneurship. 
+                        I specialize in creating engaging, search-engine-optimized content that helps businesses grow their online presence. 
+                        Through my journey, I've discovered the power of well-crafted content in connecting brands with their audiences.
+                    </p>
+                    
+                    <h3 class="text-xl font-semibold text-violet mb-4">Goals:</h3>
+                    <div class="text-gray-700 mb-6">
+                        <p class="italic text-lg leading-relaxed bg-lavender p-4 rounded-lg">
+                            "In my own country, I want to be an entrepreneur. My dream is to open a beautiful café and grow my own business while also exploring other opportunities."
+                        </p>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-violet mb-4">Skills & Experience:</h3>
                     <div class="space-y-4">
-                        <div class="flex items-center">
-                            <span class="text-deep-lavender font-semibold mr-4">•</span>
-                            <span class="text-gray-700">IELTS Certificate (gained with a decent mark)</span>
+                        <div class="flex items-start">
+                            <span class="text-violet font-semibold mr-4">•</span>
+                            <div>
+                                <span class="font-semibold text-violet">SEO Content Writing</span>
+                                <span class="text-gray-700"> → Specialized in healthcare and skincare content that ranks well on search engines</span>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <span class="text-deep-lavender font-semibold mr-4">•</span>
-                            <span class="text-gray-700">HubSpot Academy (Marketing & SEO)</span>
+                        <div class="flex items-start">
+                            <span class="text-violet font-semibold mr-4">•</span>
+                            <div>
+                                <span class="font-semibold text-violet">Digital Marketing</span>
+                                <span class="text-gray-700"> → Certified in customer persona building and digital marketing strategies</span>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <span class="text-deep-lavender font-semibold mr-4">•</span>
-                            <span class="text-gray-700">Semrush Academy</span>
+                        <div class="flex items-start">
+                            <span class="text-violet font-semibold mr-4">•</span>
+                            <div>
+                                <span class="font-semibold text-violet">Entrepreneurship</span>
+                                <span class="text-gray-700"> → Trained in small business development and startup strategies</span>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <span class="text-deep-lavender font-semibold mr-4">•</span>
-                            <span class="text-gray-700">HP Life Certification</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="text-deep-lavender font-semibold mr-4">•</span>
-                            <span class="text-gray-700">Basic Chinese and Korean language learned</span>
+                        <div class="flex items-start">
+                            <span class="text-violet font-semibold mr-4">•</span>
+                            <div>
+                                <span class="font-semibold text-violet">Volunteering</span>
+                                <span class="text-gray-700"> → Active participant in UNICEF and Bangladesh Youth Career Club</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -321,713 +315,457 @@
         </section>
     </div>
 
-    <!-- Page 2: Projects & Certificates -->
-    <div id="projectsPage" class="page hidden">
-        <div class="py-12 px-4">
+    <!-- Portfolio Page -->
+    <div id="portfolioPage" class="page hidden">
+        <section class="py-20 px-4">
             <div class="max-w-6xl mx-auto">
-                <h1 class="text-4xl font-bold text-center text-deep-lavender mb-12">Projects & Certificates</h1>
+                <h1 class="text-4xl font-bold text-center text-violet mb-12">SEO Writing Portfolio</h1>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+                    Professional SEO articles focused on healthcare and skincare topics. Each article is optimized for search engines 
+                    and designed to engage readers with valuable, actionable content.
+                </p>
                 
-                <!-- Category Navigation -->
-                <div class="flex flex-wrap justify-center gap-4 mb-12">
-                    <button onclick="showCategory('blogs')" class="category-btn bg-white/70 px-6 py-3 rounded-lg font-medium text-deep-lavender hover:bg-white transition-colors">Blogging & Websites</button>
-                    <button onclick="showCategory('crafts')" class="category-btn bg-white/70 px-6 py-3 rounded-lg font-medium text-deep-lavender hover:bg-white transition-colors">Arts & Crafts</button>
-                    <button onclick="showCategory('competitions')" class="category-btn bg-white/70 px-6 py-3 rounded-lg font-medium text-deep-lavender hover:bg-white transition-colors">Case Competitions</button>
-                    <button onclick="showCategory('creative')" class="category-btn bg-white/70 px-6 py-3 rounded-lg font-medium text-deep-lavender hover:bg-white transition-colors">Creative Works</button>
-                </div>
+                <!-- SEO Articles -->
+                <div class="gallery-grid" id="portfolioGallery"></div>
+            </div>
+        </section>
+    </div>
 
-                <!-- Blogs Section -->
-                <div id="blogsSection" class="category-section">
-                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-deep-rose">Blogging & Websites</h2>
-                            <button onclick="addBlogItem()" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Add Blog Post</button>
+    <!-- Certificates Page -->
+    <div id="certificatesPage" class="page hidden">
+        <section class="py-20 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-4xl font-bold text-center text-violet mb-12">Professional Certificates</h1>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+                    A collection of professional certifications and achievements that demonstrate my expertise in 
+                    writing, digital marketing, entrepreneurship, and community service.
+                </p>
+                
+                <div class="gallery-grid" id="certificatesGallery"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-violet">Admin Panel</h2>
+                <button onclick="closeAdminPanel()" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-violet mb-4">Add New Content</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                            <input type="text" id="adminTitle" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet">
                         </div>
-                        <div id="blogsList" class="space-y-6">
-                            <div class="blog-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">HumairaStudio</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">Personal website and blog featuring creative content, lifestyle articles, and SEO-friendly writing samples. A comprehensive platform showcasing my writing journey and creative projects.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Website</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Blog</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">SEO</span>
-                                        </div>
-                                    </div>
-                                    <button onclick="editBlogItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="https://humairaliju.github.io/Humairastudio/#" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="https://humairaliju.github.io/Humairastudio/#">Visit Website →</a>
-                                    <button onclick="uploadBlogFile(this)" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload PDF</button>
-                                </div>
-                            </div>
-                            
-                            <div class="blog-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">SEO-Friendly Articles</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">Collection of optimized content pieces focusing on lifestyle, creativity, and personal development topics. Each article is crafted with SEO best practices and engaging storytelling.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Content Writing</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">SEO</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Lifestyle</span>
-                                        </div>
-                                    </div>
-                                    <button onclick="editBlogItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="#" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="#">View Samples →</a>
-                                    <button onclick="uploadBlogFile(this)" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload PDF</button>
-                                </div>
-                            </div>
-                            
-                            <div class="blog-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">Creative Writing Portfolio</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">A showcase of creative writing pieces including short stories, poetry, and creative non-fiction. Exploring themes of culture, identity, and personal growth.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Creative Writing</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Poetry</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Storytelling</span>
-                                        </div>
-                                    </div>
-                                    <button onclick="editBlogItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="#" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="#">Read More →</a>
-                                    <button onclick="uploadBlogFile(this)" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload PDF</button>
-                                </div>
-                            </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                            <select id="adminCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet">
+                                <option value="seo-writing">SEO Writing</option>
+                                <option value="certificates">Certificates</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                            <textarea id="adminDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet"></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">File URL or Upload</label>
+                            <input type="text" id="adminFileUrl" placeholder="Enter URL or upload file below" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet mb-2">
+                            <input type="file" id="adminFileUpload" class="w-full px-3 py-2 border border-gray-300 rounded-lg" accept="image/*,.pdf,.pptx,.docx">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tags (comma separated)</label>
+                            <input type="text" id="adminTags" placeholder="tag1, tag2, tag3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail Emoji</label>
+                            <input type="text" id="adminThumbnail" placeholder="🌐" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet">
+                        </div>
+                        <div class="md:col-span-2">
+                            <button onclick="addNewContent()" class="bg-violet text-white px-6 py-2 rounded-lg hover:bg-dark-violet transition-colors">Add Content</button>
                         </div>
                     </div>
                 </div>
-
-                <!-- Arts & Crafts Section -->
-                <div id="craftsSection" class="category-section hidden">
-                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-deep-rose">Arts & Crafts Gallery</h2>
-                            <div class="flex gap-2">
-                                <button onclick="addCraftItem()" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Add Craft</button>
-                                <button onclick="uploadCraftImages()" class="edit-only hidden bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">Upload Images</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Craft Categories -->
-                        <div class="flex flex-wrap gap-4 mb-6">
-                            <button onclick="filterCrafts('all')" class="craft-filter-btn active bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">All</button>
-                            <button onclick="filterCrafts('cards')" class="craft-filter-btn bg-white/70 text-deep-lavender px-4 py-2 rounded-lg hover:bg-white transition-colors">Handmade Cards</button>
-                            <button onclick="filterCrafts('business')" class="craft-filter-btn bg-white/70 text-deep-lavender px-4 py-2 rounded-lg hover:bg-white transition-colors">Business Projects</button>
-                            <button onclick="filterCrafts('custom')" class="craft-filter-btn bg-white/70 text-deep-lavender px-4 py-2 rounded-lg hover:bg-white transition-colors">Custom Designs</button>
-                        </div>
-                        
-                        <!-- File Upload Area (Edit Mode Only) -->
-                        <div id="craftUploadArea" class="edit-only hidden mb-6">
-                            <div class="file-upload" onclick="document.getElementById('craftFileInput').click()">
-                                <div class="text-4xl mb-2">📁</div>
-                                <p class="text-deep-lavender font-medium">Click or drag images here to upload</p>
-                                <p class="text-gray-600 text-sm">Supports JPG, PNG, GIF</p>
-                            </div>
-                            <input type="file" id="craftFileInput" multiple accept="image/*" class="hidden" onchange="handleCraftUpload(event)">
-                        </div>
-                        
-                        <!-- Crafts Gallery -->
-                        <div id="craftsList" class="gallery-grid">
-                            <!-- Sample craft items with placeholder images -->
-                            <div class="craft-item bg-white rounded-lg shadow-md overflow-hidden" data-category="cards">
-                                <div class="gallery-item" onclick="openLightbox('crafts', 0)">
-                                    <div class="h-full bg-gradient-to-br from-lavender to-rose-pink flex items-center justify-center text-white font-bold">
-                                        <div class="text-center">
-                                            <div class="text-3xl mb-2">💌</div>
-                                            <div class="text-sm">Birthday Card</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="editable font-semibold text-deep-lavender mb-1" contenteditable="false">Birthday Greeting Card</h3>
-                                    <p class="editable text-gray-600 text-sm" contenteditable="false">Handmade card with floral design</p>
-                                    <button onclick="editCraftItem(this)" class="edit-only hidden mt-2 text-deep-rose text-sm hover:underline">Edit Details</button>
-                                </div>
-                            </div>
-                            
-                            <div class="craft-item bg-white rounded-lg shadow-md overflow-hidden" data-category="cards">
-                                <div class="gallery-item" onclick="openLightbox('crafts', 1)">
-                                    <div class="h-full bg-gradient-to-br from-rose-pink to-deep-rose flex items-center justify-center text-white font-bold">
-                                        <div class="text-center">
-                                            <div class="text-3xl mb-2">💝</div>
-                                            <div class="text-sm">Wedding Card</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="editable font-semibold text-deep-lavender mb-1" contenteditable="false">Wedding Invitation</h3>
-                                    <p class="editable text-gray-600 text-sm" contenteditable="false">Elegant wedding invitation with gold accents</p>
-                                    <button onclick="editCraftItem(this)" class="edit-only hidden mt-2 text-deep-rose text-sm hover:underline">Edit Details</button>
-                                </div>
-                            </div>
-                            
-                            <div class="craft-item bg-white rounded-lg shadow-md overflow-hidden" data-category="business">
-                                <div class="gallery-item" onclick="openLightbox('crafts', 2)">
-                                    <div class="h-full bg-gradient-to-br from-deep-lavender to-lavender flex items-center justify-center text-white font-bold">
-                                        <div class="text-center">
-                                            <div class="text-3xl mb-2">🎨</div>
-                                            <div class="text-sm">Art Piece</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="editable font-semibold text-deep-lavender mb-1" contenteditable="false">Custom Art Commission</h3>
-                                    <p class="editable text-gray-600 text-sm" contenteditable="false">Personalized artwork for client</p>
-                                    <button onclick="editCraftItem(this)" class="edit-only hidden mt-2 text-deep-rose text-sm hover:underline">Edit Details</button>
-                                </div>
-                            </div>
-                            
-                            <div class="craft-item bg-white rounded-lg shadow-md overflow-hidden" data-category="custom">
-                                <div class="gallery-item" onclick="openLightbox('crafts', 3)">
-                                    <div class="h-full bg-gradient-to-br from-deep-rose to-rose-pink flex items-center justify-center text-white font-bold">
-                                        <div class="text-center">
-                                            <div class="text-3xl mb-2">🌸</div>
-                                            <div class="text-sm">Decoration</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="editable font-semibold text-deep-lavender mb-1" contenteditable="false">Home Decoration</h3>
-                                    <p class="editable text-gray-600 text-sm" contenteditable="false">Handcrafted wall decoration</p>
-                                    <button onclick="editCraftItem(this)" class="edit-only hidden mt-2 text-deep-rose text-sm hover:underline">Edit Details</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Case Competitions Section -->
-                <div id="competitionsSection" class="category-section hidden">
-                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-deep-rose">Case Competitions</h2>
-                            <div class="flex gap-2">
-                                <button onclick="addCompetitionItem()" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Add Competition</button>
-                                <button onclick="uploadCompetitionFiles()" class="edit-only hidden bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">Upload Files</button>
-                            </div>
-                        </div>
-                        
-                        <!-- File Upload Area (Edit Mode Only) -->
-                        <div id="competitionUploadArea" class="edit-only hidden mb-6">
-                            <div class="file-upload" onclick="document.getElementById('competitionFileInput').click()">
-                                <div class="text-4xl mb-2">📁</div>
-                                <p class="text-deep-lavender font-medium">Click or drag files here to upload</p>
-                                <p class="text-gray-600 text-sm">Supports Images, PDFs, Documents</p>
-                            </div>
-                            <input type="file" id="competitionFileInput" multiple accept="image/*,.pdf,.doc,.docx,.ppt,.pptx" class="hidden" onchange="handleCompetitionUpload(event)">
-                        </div>
-                        
-                        <div id="competitionsList" class="space-y-6">
-                            <div class="competition-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">GoEdu Parental Writing Competition</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">Participated in a competitive writing challenge focused on parental guidance and educational topics. Developed comprehensive content strategies and engaging narratives that resonated with parents and educators.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Writing Competition</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Content Strategy</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Education</span>
-                                        </div>
-                                        <!-- Gallery for this item -->
-                                        <div class="competition-gallery grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-lavender to-rose-pink rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 0)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">📝</div>
-                                                    <div class="text-xs">Submission</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-deep-lavender to-deep-rose rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 1)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🏆</div>
-                                                    <div class="text-xs">Certificate</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-rose-pink to-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 2)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">📊</div>
-                                                    <div class="text-xs">Results</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button onclick="editCompetitionItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="#" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="#">View Details →</a>
-                                    <button onclick="uploadItemFiles(this, 'competition')" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload Files</button>
-                                    <button onclick="removeCompetitionItem(this)" class="edit-only hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Remove</button>
-                                </div>
-                            </div>
-                            
-                            <div class="competition-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">Business Management Club Competition</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">Engaged in business case studies and management challenges, developing strategic thinking and problem-solving skills. Collaborated with team members to analyze complex business scenarios and present innovative solutions.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Business Case</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Strategy</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Team Work</span>
-                                        </div>
-                                        <!-- Gallery for this item -->
-                                        <div class="competition-gallery grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-deep-lavender to-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 3)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">📈</div>
-                                                    <div class="text-xs">Analysis</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-rose-pink to-deep-rose rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 4)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">💼</div>
-                                                    <div class="text-xs">Presentation</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-lavender to-rose-pink rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 5)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🎯</div>
-                                                    <div class="text-xs">Solution</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-deep-rose to-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 6)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🏅</div>
-                                                    <div class="text-xs">Award</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button onclick="editCompetitionItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="#" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="#">View Case Study →</a>
-                                    <button onclick="uploadItemFiles(this, 'competition')" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload Files</button>
-                                    <button onclick="removeCompetitionItem(this)" class="edit-only hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Remove</button>
-                                </div>
-                            </div>
-                            
-                            <div class="competition-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">International Youth Leadership Challenge</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">Participated in a global leadership competition focusing on sustainable development and youth empowerment. Developed innovative solutions for community challenges and presented to international judges.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Leadership</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Global Impact</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Innovation</span>
-                                        </div>
-                                        <!-- Gallery for this item -->
-                                        <div class="competition-gallery grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-deep-rose to-rose-pink rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 7)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🌍</div>
-                                                    <div class="text-xs">Project</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-lavender to-deep-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 8)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">👥</div>
-                                                    <div class="text-xs">Team Photo</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-rose-pink to-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('competitions', 9)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🎤</div>
-                                                    <div class="text-xs">Presentation</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button onclick="editCompetitionItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="#" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="#">View Project →</a>
-                                    <button onclick="uploadItemFiles(this, 'competition')" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload Files</button>
-                                    <button onclick="removeCompetitionItem(this)" class="edit-only hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Remove</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Creative Works Section -->
-                <div id="creativeSection" class="category-section hidden">
-                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-deep-rose">Creative Works</h2>
-                            <div class="flex gap-2">
-                                <button onclick="addCreativeItem()" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Add Creative Work</button>
-                                <button onclick="uploadCreativeFiles()" class="edit-only hidden bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">Upload Files</button>
-                            </div>
-                        </div>
-                        
-                        <!-- File Upload Area (Edit Mode Only) -->
-                        <div id="creativeUploadArea" class="edit-only hidden mb-6">
-                            <div class="file-upload" onclick="document.getElementById('creativeFileInput').click()">
-                                <div class="text-4xl mb-2">📁</div>
-                                <p class="text-deep-lavender font-medium">Click or drag files here to upload</p>
-                                <p class="text-gray-600 text-sm">Supports Images, PDFs, Documents</p>
-                            </div>
-                            <input type="file" id="creativeFileInput" multiple accept="image/*,.pdf,.doc,.docx,.ppt,.pptx" class="hidden" onchange="handleCreativeUpload(event)">
-                        </div>
-                        
-                        <div id="creativeList" class="space-y-6">
-                            <div class="creative-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">Canva Design Projects</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">Professional graphic design work including social media posts, infographics, and marketing materials. A comprehensive portfolio showcasing visual creativity and brand design skills.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Graphic Design</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Canva</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Branding</span>
-                                        </div>
-                                        <!-- Gallery for this item -->
-                                        <div class="creative-gallery grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                                            <div class="gallery-item aspect-square bg-gradient-to-br from-lavender to-rose-pink rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 0)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🎨</div>
-                                                    <div class="text-xs">Design 1</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-square bg-gradient-to-br from-deep-lavender to-deep-rose rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 1)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">📊</div>
-                                                    <div class="text-xs">Infographic</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-square bg-gradient-to-br from-rose-pink to-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 2)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">📱</div>
-                                                    <div class="text-xs">Social Media</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-square bg-gradient-to-br from-deep-rose to-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 3)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🏷️</div>
-                                                    <div class="text-xs">Logo Design</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button onclick="editCreativeItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="#" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="#">View Portfolio →</a>
-                                    <button onclick="uploadItemFiles(this, 'creative')" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload Files</button>
-                                    <button onclick="removeCreativeItem(this)" class="edit-only hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Remove</button>
-                                </div>
-                            </div>
-                            
-                            <div class="creative-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">Presentation Design</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">Creative PowerPoint presentations with engaging visuals and professional layouts for various topics. Includes business presentations, educational content, and creative storytelling slides.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">PowerPoint</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Presentations</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Visual Design</span>
-                                        </div>
-                                        <!-- Gallery for this item -->
-                                        <div class="creative-gallery grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-deep-lavender to-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 4)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">📊</div>
-                                                    <div class="text-xs">Business Deck</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-rose-pink to-deep-rose rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 5)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🎓</div>
-                                                    <div class="text-xs">Educational</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-video bg-gradient-to-br from-lavender to-rose-pink rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 6)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">✨</div>
-                                                    <div class="text-xs">Creative</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button onclick="editCreativeItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="#" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="#">View Samples →</a>
-                                    <button onclick="uploadItemFiles(this, 'creative')" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload Files</button>
-                                    <button onclick="removeCreativeItem(this)" class="edit-only hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Remove</button>
-                                </div>
-                            </div>
-                            
-                            <div class="creative-item bg-white rounded-lg p-6 shadow-md">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="flex-1">
-                                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">Digital Art & Illustrations</h3>
-                                        <p class="editable text-gray-600 mb-3" contenteditable="false">Original digital artwork and illustrations created for various projects. Includes character design, concept art, and decorative illustrations with unique artistic style.</p>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Digital Art</span>
-                                            <span class="bg-rose-pink text-deep-rose px-3 py-1 rounded-full text-sm">Illustration</span>
-                                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">Character Design</span>
-                                        </div>
-                                        <!-- Gallery for this item -->
-                                        <div class="creative-gallery grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                                            <div class="gallery-item aspect-square bg-gradient-to-br from-deep-rose to-rose-pink rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 7)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">👤</div>
-                                                    <div class="text-xs">Character</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-square bg-gradient-to-br from-lavender to-deep-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 8)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🌸</div>
-                                                    <div class="text-xs">Floral Art</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-square bg-gradient-to-br from-rose-pink to-lavender rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 9)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🎭</div>
-                                                    <div class="text-xs">Concept Art</div>
-                                                </div>
-                                            </div>
-                                            <div class="gallery-item aspect-square bg-gradient-to-br from-deep-lavender to-deep-rose rounded-lg flex items-center justify-center cursor-pointer" onclick="openLightbox('creative', 10)">
-                                                <div class="text-center text-white">
-                                                    <div class="text-2xl mb-1">🖼️</div>
-                                                    <div class="text-xs">Portrait</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button onclick="editCreativeItem(this)" class="edit-only hidden ml-4 text-deep-rose hover:underline">Edit</button>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="#" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="#">View Gallery →</a>
-                                    <button onclick="uploadItemFiles(this, 'creative')" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload Files</button>
-                                    <button onclick="removeCreativeItem(this)" class="edit-only hidden bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Remove</button>
-                                </div>
-                            </div>
-                        </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-violet mb-4">Existing Content</h3>
+                    <div id="adminContentList" class="space-y-2 max-h-60 overflow-y-auto">
+                        <!-- Content list will be populated here -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Page 3: References & Contact -->
+    <!-- Contact & References Page -->
     <div id="contactPage" class="page hidden">
-        <div class="py-12 px-4">
+        <!-- Contact Section -->
+        <section class="py-20 px-4">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-4xl font-bold text-center text-deep-lavender mb-12">References & Contact</h1>
+                <h1 class="text-4xl font-bold text-center text-violet mb-12">Contact & References</h1>
                 
-                <!-- Testimonials Section -->
-                <section class="mb-16">
-                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-                        <div class="flex justify-between items-center mb-8">
-                            <h2 class="text-3xl font-bold text-deep-rose">Testimonials</h2>
-                            <button onclick="addTestimonial()" class="edit-only hidden bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Add Testimonial</button>
-                        </div>
-                        <div id="testimonialsList" class="space-y-6">
-                            <div class="bg-white rounded-lg p-6 shadow-md">
-                                <p class="text-gray-700 mb-4 italic">"Working with Humaira Liju was an incredible experience. Her dedication and creativity brought our project to life in ways we never imagined. I'm truly happy to have collaborated with such a talented individual."</p>
-                                <div class="flex items-center">
-                                    <div class="w-12 h-12 bg-gradient-to-r from-lavender to-rose-pink rounded-full flex items-center justify-center text-white font-bold mr-4">JD</div>
-                                    <div>
-                                        <h4 class="font-semibold text-deep-lavender">John Doe</h4>
-                                        <p class="text-gray-600 text-sm">Project Manager, Tech Company</p>
-                                    </div>
+                <div class="grid md:grid-cols-2 gap-8 mb-16">
+                    <!-- Contact Information -->
+                    <div class="bg-white/70 backdrop-blur-sm rounded-xl p-8 shadow-lg">
+                        <h2 class="text-2xl font-semibold text-violet mb-6">Get In Touch</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-4">📧</span>
+                                <div>
+                                    <div class="font-semibold text-violet">Email</div>
+                                    <a href="mailto:humaira.liju@email.com" class="editable text-gray-700 hover:text-violet" data-field="email">humaira.liju@email.com</a>
                                 </div>
                             </div>
-                            <div class="bg-white rounded-lg p-6 shadow-md">
-                                <p class="text-gray-700 mb-4 italic">"Humaira Liju is an exceptional collaborator with a keen eye for detail and innovative solutions. I'm so happy we had the opportunity to work together. Highly recommended!"</p>
-                                <div class="flex items-center">
-                                    <div class="w-12 h-12 bg-gradient-to-r from-rose-pink to-lavender rounded-full flex items-center justify-center text-white font-bold mr-4">JS</div>
-                                    <div>
-                                        <h4 class="font-semibold text-deep-lavender">Jane Smith</h4>
-                                        <p class="text-gray-600 text-sm">Creative Director, Design Studio</p>
-                                    </div>
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-4">💼</span>
+                                <div>
+                                    <div class="font-semibold text-violet">LinkedIn</div>
+                                    <a href="https://www.linkedin.com/in/humaira-liju-816a18251?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="editable text-gray-700 hover:text-violet" data-field="linkedin">linkedin.com/in/humaira-liju-816a18251</a>
                                 </div>
                             </div>
-                            <div class="bg-white rounded-lg p-6 shadow-md">
-                                <p class="text-gray-700 mb-4 italic">"I had the pleasure of working with Humaira Liju on several content projects. Her writing skills and creative approach exceeded all expectations. I'm genuinely happy to recommend her work!"</p>
-                                <div class="flex items-center">
-                                    <div class="w-12 h-12 bg-gradient-to-r from-deep-lavender to-deep-rose rounded-full flex items-center justify-center text-white font-bold mr-4">MR</div>
-                                    <div>
-                                        <h4 class="font-semibold text-deep-lavender">Maria Rodriguez</h4>
-                                        <p class="text-gray-600 text-sm">Content Marketing Manager, Digital Agency</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-white rounded-lg p-6 shadow-md">
-                                <p class="text-gray-700 mb-4 italic">"Humaira Liju's artistic talents and professional approach made our collaboration seamless and enjoyable. Her handmade crafts and attention to detail are remarkable. I'm very happy with the results we achieved together!"</p>
-                                <div class="flex items-center">
-                                    <div class="w-12 h-12 bg-gradient-to-r from-rose-pink to-deep-lavender rounded-full flex items-center justify-center text-white font-bold mr-4">AL</div>
-                                    <div>
-                                        <h4 class="font-semibold text-deep-lavender">Ahmed Khan</h4>
-                                        <p class="text-gray-600 text-sm">Event Coordinator, Cultural Center</p>
-                                    </div>
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-4">📍</span>
+                                <div>
+                                    <div class="font-semibold text-violet">Location</div>
+                                    <div class="editable text-gray-700" data-field="location">Available for remote work</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
 
-                <!-- Contact Section -->
-                <section>
-                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-                        <h2 class="text-3xl font-bold text-deep-rose mb-8 text-center">Get In Touch</h2>
-                        <div class="grid md:grid-cols-3 gap-6">
-                            <div class="text-center">
-                                <div class="w-16 h-16 bg-gradient-to-r from-deep-lavender to-deep-rose rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
-                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="font-semibold text-deep-lavender mb-2">Email</h3>
-                                <p class="editable text-gray-600" data-field="email">lijuhumaira2001@gmail.com</p>
+                    <!-- Contact Form -->
+                    <div class="bg-white/70 backdrop-blur-sm rounded-xl p-8 shadow-lg">
+                        <h2 class="text-2xl font-semibold text-violet mb-6">Send Message</h2>
+                        <form action="mailto:humaira.liju@email.com" method="post" enctype="text/plain" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet">
                             </div>
-                            <div class="text-center">
-                                <div class="w-16 h-16 bg-gradient-to-r from-deep-lavender to-deep-rose rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="font-semibold text-deep-lavender mb-2">LinkedIn</h3>
-                                <a href="https://www.linkedin.com/in/humaira-liju-816a18251?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="editable text-deep-rose hover:underline" data-field="linkedin" target="_blank">linkedin.com/in/humaira-liju</a>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet">
                             </div>
-                            <div class="text-center">
-                                <div class="w-16 h-16 bg-gradient-to-r from-deep-lavender to-deep-rose rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10zm-4 1a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-                                    </svg>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                                <input type="text" name="subject" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                                <textarea name="message" rows="4" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-violet text-white py-2 rounded-lg hover:bg-dark-violet transition-colors">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- References Section -->
+                <div class="bg-white/70 backdrop-blur-sm rounded-xl p-8 shadow-lg">
+                    <h2 class="text-3xl font-semibold text-violet mb-8 text-center">Client References</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-lavender p-6 rounded-lg">
+                            <div class="flex items-start mb-4">
+                                <span class="text-2xl mr-3">⭐</span>
+                                <div>
+                                    <p class="text-gray-700 italic mb-2">"Humaira is very professional and always delivers on time. I am fully satisfied with her work."</p>
+                                    <p class="text-violet font-semibold">– Sams John, Digital Marketing</p>
                                 </div>
-                                <h3 class="font-semibold text-deep-lavender mb-2">Resume</h3>
-                                <button onclick="downloadResume()" class="bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">Download</button>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-lavender p-6 rounded-lg">
+                            <div class="flex items-start mb-4">
+                                <span class="text-2xl mr-3">⭐</span>
+                                <div>
+                                    <p class="text-gray-700 italic mb-2">"She has strong skills in writing and business ideas, highly recommended."</p>
+                                    <p class="text-violet font-semibold">– Azora Leren, Business Field</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-lavender p-6 rounded-lg">
+                            <div class="flex items-start mb-4">
+                                <span class="text-2xl mr-3">⭐</span>
+                                <div>
+                                    <p class="text-gray-700 italic mb-2">"Her SEO writing helped my website rank better, great job."</p>
+                                    <p class="text-violet font-semibold">– Rober Arison, SEO Marketing</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-lavender p-6 rounded-lg">
+                            <div class="flex items-start mb-4">
+                                <span class="text-2xl mr-3">⭐</span>
+                                <div>
+                                    <p class="text-gray-700 italic mb-2">"Very creative, hardworking, and passionate about projects."</p>
+                                    <p class="text-violet font-semibold">– Laura Sawn, Creative Director</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-lavender p-6 rounded-lg md:col-span-2">
+                            <div class="flex items-start mb-4">
+                                <span class="text-2xl mr-3">⭐</span>
+                                <div>
+                                    <p class="text-gray-700 italic mb-2">"I appreciate her dedication and excellent communication skills."</p>
+                                    <p class="text-violet font-semibold">– Maia Klen, Project Manager</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
 
-    <!-- Lightbox Modal -->
+    <!-- Lightbox -->
     <div id="lightbox" class="lightbox hidden">
         <div class="lightbox-content">
-            <div class="lightbox-close" onclick="closeLightbox()">&times;</div>
-            <div class="lightbox-prev" onclick="prevImage()">&#8249;</div>
-            <div class="lightbox-next" onclick="nextImage()">&#8250;</div>
-            <img id="lightboxImage" src="" alt="">
-            <div id="lightboxCaption" class="text-white text-center mt-4"></div>
+            <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+            <div id="lightboxMedia"></div>
         </div>
     </div>
 
-    <!-- File Upload Modal -->
-    <div id="uploadModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <h2 class="text-2xl font-bold text-deep-lavender mb-6">Upload Files</h2>
-            <div class="file-upload mb-4" onclick="document.getElementById('modalFileInput').click()">
-                <div class="text-4xl mb-2">📁</div>
-                <p class="text-deep-lavender font-medium">Click to select files</p>
-                <p class="text-gray-600 text-sm">Images, PDFs, Documents</p>
-            </div>
-            <input type="file" id="modalFileInput" multiple accept="image/*,.pdf,.doc,.docx" class="hidden">
-            <div class="flex space-x-4 mt-6">
-                <button onclick="handleModalUpload()" class="flex-1 bg-deep-lavender text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">Upload</button>
-                <button onclick="closeUploadModal()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition-colors">Cancel</button>
-            </div>
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold text-violet mb-6 text-center">Admin Login</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="loginPassword" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet" required>
+                </div>
+                <div class="flex gap-4">
+                    <button type="submit" class="flex-1 bg-violet text-white py-2 rounded-lg hover:bg-dark-violet transition-colors">Login</button>
+                    <button type="button" onclick="closeLoginModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        let isLoggedIn = false;
+        // ============================================
+        // DATA BLOCK - Edit here to add/update content
+        // ============================================
+        const portfolioData = [
+            // Website Project
+            {
+                id: 1,
+                title: "Humaira Studio Website",
+                category: "seo-writing",
+                thumbnail: "🌐",
+                fileUrl: "https://humairaliju.github.io/Humairastudio/#",
+                description: "A comprehensive website development project showcasing modern design principles and responsive functionality for Humaira Studio.",
+                date: "2024-01-20",
+                tags: ["Web Development", "Responsive Design", "Portfolio"],
+                visible: true
+            },
+            // SEO Writing Portfolio
+            {
+                id: 2,
+                title: "Complete Guide to Daily Skincare Routine",
+                category: "seo-writing",
+                thumbnail: "🧴",
+                fileUrl: "#skincare-article",
+                description: "A comprehensive 250-word SEO article about establishing an effective daily skincare routine for healthy, glowing skin.",
+                date: "2024-01-15",
+                tags: ["SEO Writing", "Skincare", "Beauty"],
+                visible: true,
+                fullContent: `
+                    <h2 class="text-2xl font-bold text-violet mb-4">Complete Guide to Daily Skincare Routine</h2>
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'><rect width='400' height='250' fill='%23F3E8FF'/><text x='200' y='125' text-anchor='middle' dy='.3em' font-size='40'>🧴✨</text></svg>" alt="Skincare Products" class="w-full h-48 object-cover rounded-lg mb-6">
+                    
+                    <p class="text-gray-700 mb-4">Taking care of your skin daily with cleansing, hydration, and natural ingredients helps maintain a healthy glow. Consistency is the secret to long-lasting results that will keep your skin looking youthful and radiant.</p>
+                    
+                    <h3 class="text-lg font-semibold text-violet mb-3">Morning Skincare Routine</h3>
+                    <p class="text-gray-700 mb-4">Start your day with a gentle cleanser to remove overnight impurities. Follow with a vitamin C serum to protect against environmental damage, then apply a lightweight moisturizer with SPF 30 or higher. This simple three-step routine creates a protective barrier for your skin throughout the day.</p>
+                    
+                    <h3 class="text-lg font-semibold text-violet mb-3">Evening Skincare Routine</h3>
+                    <p class="text-gray-700 mb-4">Remove makeup and sunscreen with a double cleanse method. Apply a retinol product (if suitable for your skin type) or a nourishing night serum. Finish with a rich moisturizer to repair and hydrate your skin while you sleep.</p>
+                    
+                    <h3 class="text-lg font-semibold text-violet mb-3">Weekly Skincare Additions</h3>
+                    <p class="text-gray-700 mb-4">Incorporate exfoliation 2-3 times per week using gentle acids or physical scrubs. Use a hydrating face mask once weekly to boost moisture levels. Remember to patch test new products and introduce them gradually to avoid irritation.</p>
+                    
+                    <p class="text-gray-700 font-medium">Consistency and patience are key to achieving healthy, glowing skin. Results typically appear after 4-6 weeks of regular use.</p>
+                `
+            },
+            {
+                id: 3,
+                title: "Essential Healthcare Tips for Better Living",
+                category: "seo-writing",
+                thumbnail: "🏥",
+                fileUrl: "#healthcare-article",
+                description: "A detailed 280-word SEO article covering fundamental healthcare practices for maintaining optimal physical and mental wellness.",
+                date: "2024-01-10",
+                tags: ["SEO Writing", "Healthcare", "Wellness"],
+                visible: true,
+                fullContent: `
+                    <h2 class="text-2xl font-bold text-violet mb-4">Essential Healthcare Tips for Better Living</h2>
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'><rect width='400' height='250' fill='%23E9D5FF'/><text x='200' y='125' text-anchor='middle' dy='.3em' font-size='40'>🏥💚</text></svg>" alt="Healthcare Wellness" class="w-full h-48 object-cover rounded-lg mb-6">
+                    
+                    <p class="text-gray-700 mb-4">Maintaining good health starts with balanced food, regular exercise, and proper rest. Small daily habits create big impacts on overall wellness, helping you live a more energetic and fulfilling life.</p>
+                    
+                    <h3 class="text-lg font-semibold text-violet mb-3">Nutrition and Hydration</h3>
+                    <p class="text-gray-700 mb-4">Focus on whole foods including fruits, vegetables, lean proteins, and whole grains. Aim for 8-10 glasses of water daily to support cellular function and maintain energy levels. Limit processed foods, excessive sugar, and alcohol consumption for optimal health benefits.</p>
+                    
+                    <h3 class="text-lg font-semibold text-violet mb-3">Physical Activity and Exercise</h3>
+                    <p class="text-gray-700 mb-4">Incorporate at least 150 minutes of moderate exercise weekly, such as brisk walking, swimming, or cycling. Strength training twice per week helps maintain muscle mass and bone density. Even 10-minute movement breaks throughout the day can significantly improve circulation and mood.</p>
+                    
+                    <h3 class="text-lg font-semibold text-violet mb-3">Mental Health and Sleep</h3>
+                    <p class="text-gray-700 mb-4">Prioritize 7-9 hours of quality sleep nightly by maintaining a consistent bedtime routine. Practice stress management through meditation, deep breathing, or hobbies you enjoy. Regular social connections and professional mental health support when needed are equally important.</p>
+                    
+                    <h3 class="text-lg font-semibold text-violet mb-3">Preventive Care</h3>
+                    <p class="text-gray-700 mb-4">Schedule regular check-ups with healthcare providers for early detection of potential issues. Stay current with vaccinations and recommended screenings based on your age and risk factors.</p>
+                    
+                    <p class="text-gray-700 font-medium">Remember, small consistent changes lead to significant long-term health improvements. Start with one habit and gradually build your wellness routine.</p>
+                `
+            },
+
+            // Certificates
+            {
+                id: 4,
+                title: "GoEdu Writing Certificate",
+                category: "certificates",
+                thumbnail: "🏆",
+                fileUrl: "https://cscan.co/2gMnImw45J",
+                description: "Certificate from GoEdu for writing on parental topics. Received the competition-winning award for outstanding content creation and research skills.",
+                date: "2023-12-20",
+                tags: ["Writing", "Parental Topics", "Competition Winner"],
+                visible: true
+            },
+            {
+                id: 5,
+                title: "HP Life Certificate - Starting a Small Business",
+                category: "certificates",
+                thumbnail: "💼",
+                fileUrl: "https://cscan.co/2IbtkDj93r",
+                description: "Professional certification in small business development, covering business planning, financial management, and entrepreneurship fundamentals.",
+                date: "2023-11-15",
+                tags: ["Entrepreneurship", "Business Development", "HP Life"],
+                visible: true
+            },
+            {
+                id: 6,
+                title: "Semrush Academy - Building Customer Persona",
+                category: "certificates",
+                thumbnail: "👥",
+                fileUrl: "https://cscan.co/8MG8RO3VfQ",
+                description: "Advanced certification in customer persona development and market research techniques for targeted marketing strategies.",
+                date: "2023-10-10",
+                tags: ["Digital Marketing", "Customer Research", "Semrush"],
+                visible: true
+            },
+            {
+                id: 7,
+                title: "HubSpot Academy - Digital Marketing Certificate",
+                category: "certificates",
+                thumbnail: "📱",
+                fileUrl: "https://cscan.co/7AExlb7wHx",
+                description: "Comprehensive digital marketing certification covering SEO, content marketing, social media, and analytics strategies.",
+                date: "2023-09-05",
+                tags: ["Digital Marketing", "SEO", "HubSpot"],
+                visible: true
+            },
+            {
+                id: 8,
+                title: "UNICEF Online Certificate - Volunteering",
+                category: "certificates",
+                thumbnail: "🌍",
+                fileUrl: "https://cscan.co/1pr1zGMTf",
+                description: "Certificate of completion for UNICEF volunteer training program, focusing on community service and social impact initiatives.",
+                date: "2023-08-20",
+                tags: ["Volunteering", "Community Service", "UNICEF"],
+                visible: true
+            },
+            {
+                id: 9,
+                title: "Bangladesh Youth Career Club - Volunteering Experience",
+                category: "certificates",
+                thumbnail: "🤝",
+                fileUrl: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'><rect width='600' height='400' fill='%23DCFCE7' stroke='%2316A34A' stroke-width='3'/><rect x='20' y='20' width='560' height='360' fill='white' stroke='%23BBF7D0' stroke-width='2'/><text x='300' y='60' text-anchor='middle' font-size='20' font-weight='bold' fill='%2316A34A'>BANGLADESH YOUTH CAREER CLUB</text><text x='300' y='100' text-anchor='middle' font-size='18' fill='%23374151'>Volunteer Recognition</text><text x='300' y='140' text-anchor='middle' font-size='16' fill='%23374151'>This recognizes</text><text x='300' y='180' text-anchor='middle' font-size='20' font-weight='bold' fill='%2316A34A'>Humaira Liju</text><text x='300' y='220' text-anchor='middle' font-size='16' fill='%23374151'>for active participation and leadership in</text><text x='300' y='240' text-anchor='middle' font-size='16' fill='%23374151'>career development and youth programs</text><text x='150' y='320' font-size='14' fill='%23374151'>Date: July 15, 2023</text><text x='450' y='320' font-size='14' fill='%23374151'>Club Director</text><circle cx='470' cy='335' r='15' fill='%2316A34A' opacity='0.3'/></svg>",
+                description: "Recognition certificate for active participation and leadership in Bangladesh Youth Career Club volunteering activities and career development programs.",
+                date: "2023-07-15",
+                tags: ["Leadership", "Career Development", "Youth Programs"],
+                visible: true
+            }
+        ];
+
+        // Global state
         let isEditMode = false;
-        let currentPage = 'home';
-        let currentCategory = 'blogs';
-        let currentLightboxGallery = [];
-        let currentLightboxIndex = 0;
-        let portfolioData = {
-            crafts: [
-                { title: "Birthday Greeting Card", description: "Handmade card with floral design", category: "cards", image: null },
-                { title: "Wedding Invitation", description: "Elegant wedding invitation with gold accents", category: "cards", image: null },
-                { title: "Custom Art Commission", description: "Personalized artwork for client", category: "business", image: null },
-                { title: "Home Decoration", description: "Handcrafted wall decoration", category: "custom", image: null }
-            ],
-            certificates: [],
-            blogs: [],
-            creative: [
-                { title: "Canva Design Projects", description: "Professional graphic design work", images: [] },
-                { title: "Presentation Design", description: "Creative PowerPoint presentations", images: [] },
-                { title: "Digital Art & Illustrations", description: "Original digital artwork", images: [] }
-            ],
-            competitions: [
-                { title: "GoEdu Parental Writing Competition", description: "Competitive writing challenge", images: [] },
-                { title: "Business Management Club Competition", description: "Business case studies", images: [] },
-                { title: "International Youth Leadership Challenge", description: "Global leadership competition", images: [] }
-            ]
-        };
+        let isLoggedIn = false;
 
-        // Navigation functions
-        function showPage(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-            document.getElementById(page + 'Page').classList.remove('hidden');
-            currentPage = page;
+        // Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
             
-            // Update nav buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('text-deep-lavender', 'font-semibold'));
-            event.target.classList.add('text-deep-lavender', 'font-semibold');
-            
-            // Close mobile menu
-            document.getElementById('mobileMenu').classList.add('hidden');
-        }
-
-        function showCategory(category) {
-            if (currentPage !== 'projects') {
-                showPage('projects');
+            // Show the requested page
+            const targetPage = document.getElementById(pageId + 'Page');
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
             }
             
-            document.querySelectorAll('.category-section').forEach(section => section.classList.add('hidden'));
-            document.getElementById(category + 'Section').classList.remove('hidden');
-            currentCategory = category;
+            // Close mobile menu
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
             
-            // Update category buttons
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('bg-white', 'text-deep-rose');
-                btn.classList.add('bg-white/70', 'text-deep-lavender');
+            // Render content for specific pages
+            if (pageId === 'portfolio') {
+                renderPortfolioContent();
+            } else if (pageId === 'certificates') {
+                renderCertificatesContent();
+            }
+            
+            // Update navigation active state
+            updateNavigation(pageId);
+        }
+        
+        function updateNavigation(activePageId) {
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-violet', 'font-semibold');
+                btn.classList.add('text-gray-700');
             });
-            event.target.classList.remove('bg-white/70', 'text-deep-lavender');
-            event.target.classList.add('bg-white', 'text-deep-rose');
+            
+            // Add active class to current page nav button
+            const activeBtn = document.querySelector(`a[href="#${activePageId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-700');
+                activeBtn.classList.add('text-violet', 'font-semibold');
+            }
         }
 
         function toggleMobileMenu() {
             document.getElementById('mobileMenu').classList.toggle('hidden');
         }
 
-        // Login/Logout functions
+        // Login functionality
         function toggleLogin() {
             document.getElementById('loginModal').classList.remove('hidden');
         }
 
         function closeLoginModal() {
             document.getElementById('loginModal').classList.add('hidden');
-            document.getElementById('passwordInput').value = '';
         }
 
-        function login() {
-            const password = document.getElementById('passwordInput').value;
-            if (password === 'admin123') { // Simple demo password
+        function handleLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (password === 'admin123') {
                 isLoggedIn = true;
                 document.getElementById('loginBtn').classList.add('hidden');
                 document.getElementById('editBtn').classList.remove('hidden');
+                document.getElementById('adminBtn').classList.remove('hidden');
                 document.getElementById('logoutBtn').classList.remove('hidden');
                 closeLoginModal();
-                alert('Login successful! You can now edit your portfolio.');
+                alert('Login successful! You can now edit the portfolio and access the admin panel.');
             } else {
                 alert('Incorrect password. Try "admin123" for demo purposes.');
             }
@@ -1038,634 +776,293 @@
             isEditMode = false;
             document.getElementById('loginBtn').classList.remove('hidden');
             document.getElementById('editBtn').classList.add('hidden');
+            document.getElementById('adminBtn').classList.add('hidden');
             document.getElementById('logoutBtn').classList.add('hidden');
-            document.querySelectorAll('.edit-only').forEach(el => el.classList.add('hidden'));
+            
             document.querySelectorAll('.editable').forEach(el => {
-                el.contentEditable = false;
                 el.classList.remove('edit-mode');
+                el.contentEditable = false;
             });
         }
 
-        // Edit mode functions
+        // Edit mode functionality
         function toggleEditMode() {
             if (!isLoggedIn) return;
             
             isEditMode = !isEditMode;
-            const editBtn = document.getElementById('editBtn');
+            const editables = document.querySelectorAll('.editable');
             
             if (isEditMode) {
-                editBtn.textContent = 'Save Changes';
-                editBtn.classList.remove('bg-deep-rose');
-                editBtn.classList.add('bg-green-600');
-                document.querySelectorAll('.edit-only').forEach(el => el.classList.remove('hidden'));
-                document.querySelectorAll('.editable').forEach(el => {
-                    el.contentEditable = true;
+                editables.forEach(el => {
                     el.classList.add('edit-mode');
+                    el.contentEditable = true;
                 });
+                document.getElementById('editBtn').textContent = 'Save Changes';
             } else {
-                editBtn.textContent = 'Edit Mode';
-                editBtn.classList.remove('bg-green-600');
-                editBtn.classList.add('bg-deep-rose');
-                document.querySelectorAll('.edit-only').forEach(el => el.classList.add('hidden'));
-                document.querySelectorAll('.editable').forEach(el => {
-                    el.contentEditable = false;
+                editables.forEach(el => {
                     el.classList.remove('edit-mode');
+                    el.contentEditable = false;
                 });
+                document.getElementById('editBtn').textContent = 'Edit Mode';
                 saveChanges();
             }
         }
 
         function saveChanges() {
-            // In a real application, this would save to a database
             alert('Changes saved successfully!');
         }
 
-        // Content management functions
-        function addItem(category) {
-            if (!isEditMode) return;
-            
-            const title = prompt(`Enter ${category.slice(0, -1)} title:`);
-            if (!title) return;
-            
-            const description = prompt('Enter description:');
-            const link = prompt('Enter link (optional):');
-            
-            // This would typically add to a database
-            alert(`${category.slice(0, -1)} "${title}" added successfully!`);
-        }
-
-        function addTestimonial() {
-            if (!isEditMode) return;
-            
-            const name = prompt('Enter person\'s name:');
-            if (!name) return;
-            
-            const company = prompt('Enter company/position:');
-            const testimonial = prompt('Enter testimonial text:');
-            
-            if (testimonial) {
-                alert(`Testimonial from ${name} added successfully!`);
+        // Content rendering
+        function renderPortfolioContent() {
+            const gallery = document.getElementById('portfolioGallery');
+            if (!gallery) {
+                console.log('Portfolio gallery not found');
+                return;
             }
-        }
-
-        function downloadResume() {
-            // In a real application, this would download the actual resume file
-            alert('Resume download would start here. Please upload your resume file when in edit mode.');
-        }
-
-        // Lightbox Functions
-        function openLightbox(gallery, index) {
-            currentLightboxIndex = index;
             
-            // Set gallery data based on category
-            if (gallery === 'crafts') {
-                currentLightboxGallery = portfolioData.crafts;
-            } else if (gallery === 'creative') {
-                currentLightboxGallery = portfolioData.creative;
-            } else if (gallery === 'competitions') {
-                currentLightboxGallery = portfolioData.competitions;
+            const items = portfolioData.filter(item => item.category === 'seo-writing' && item.visible);
+            console.log('Rendering portfolio items:', items.length);
+            gallery.innerHTML = items.map(item => createProjectCard(item)).join('');
+        }
+
+        function renderCertificatesContent() {
+            const gallery = document.getElementById('certificatesGallery');
+            if (!gallery) {
+                console.log('Certificates gallery not found');
+                return;
             }
+            
+            const items = portfolioData.filter(item => item.category === 'certificates' && item.visible);
+            console.log('Rendering certificate items:', items.length);
+            gallery.innerHTML = items.map(item => createProjectCard(item)).join('');
+        }
+
+        function createProjectCard(item) {
+            const hasFile = item.fileUrl && item.fileUrl !== '';
+            const buttonClass = hasFile ? 'bg-violet hover:bg-dark-violet text-white' : 'btn-disabled bg-gray-300 text-gray-500';
+            const buttonText = getButtonText(item.category, item.title);
+            
+            return `
+                <div class="project-card" data-category="${item.category}">
+                    <div class="project-thumbnail">
+                        ${item.thumbnail}
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold text-violet mb-2 text-lg">${item.title}</h3>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">${item.description}</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${item.tags.map(tag => `<span class="bg-lavender text-violet px-2 py-1 rounded-full text-xs">${tag}</span>`).join('')}
+                        </div>
+                        <button 
+                            onclick="${hasFile ? `openFile('${item.fileUrl}', '${item.title}', ${item.id})` : 'void(0)'}" 
+                            class="w-full px-4 py-2 rounded-lg transition-colors ${buttonClass}"
+                        >
+                            ${buttonText}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getButtonText(category, title) {
+            // Custom button text for website
+            if (title === "Humaira Studio Website") {
+                return "View Website";
+            }
+            
+            const buttonTexts = {
+                'seo-writing': 'Read Full Article',
+                'certificates': 'View Certificate'
+            };
+            return buttonTexts[category] || 'View Sample';
+        }
+
+        // File handling
+        function openFile(fileUrl, title, itemId) {
+            if (!fileUrl) return;
             
             const lightbox = document.getElementById('lightbox');
-            const image = document.getElementById('lightboxImage');
-            const caption = document.getElementById('lightboxCaption');
+            const mediaContainer = document.getElementById('lightboxMedia');
             
-            // Create different placeholder based on gallery type
-            let placeholderText = 'Click to upload image';
-            let placeholderColor = '#E6E6FA';
-            
-            if (gallery === 'creative') {
-                placeholderText = 'Creative Work Preview';
-                placeholderColor = '#F8BBD9';
-            } else if (gallery === 'competitions') {
-                placeholderText = 'Competition Document';
-                placeholderColor = '#9370DB';
+            // Check if it's a full article
+            if (fileUrl.startsWith('#')) {
+                const item = portfolioData.find(item => item.id === itemId);
+                if (item && item.fullContent) {
+                    mediaContainer.innerHTML = `
+                        <div class="bg-white rounded-lg p-8 max-w-4xl max-h-[90vh] overflow-y-auto">
+                            ${item.fullContent}
+                            <button onclick="closeLightbox()" class="mt-6 bg-violet text-white px-6 py-2 rounded-lg hover:bg-dark-violet transition-colors">Close Article</button>
+                        </div>
+                    `;
+                    lightbox.classList.remove('hidden');
+                    return;
+                }
             }
             
-            // For demo purposes, show placeholder
-            image.src = `data:image/svg+xml;base64,${btoa(`<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="${placeholderColor}"/><text x="50%" y="50%" font-family="Arial" font-size="24" fill="#9370DB" text-anchor="middle" dy=".3em">${placeholderText}</text></svg>`)}`;
-            
-            // Set caption based on gallery item or generic text
-            if (currentLightboxGallery && currentLightboxGallery[index]) {
-                caption.textContent = currentLightboxGallery[index].title;
+            // Determine file type and create appropriate element
+            if (fileUrl.includes('.pdf') || fileUrl.includes('.pptx') || fileUrl.includes('.docx')) {
+                // For documents, open in new tab
+                window.open(fileUrl, '_blank');
+                return;
+            } else if (fileUrl.startsWith('data:image') || fileUrl.includes('.jpg') || fileUrl.includes('.png') || fileUrl.includes('.gif')) {
+                // For images, show in lightbox
+                mediaContainer.innerHTML = `<img src="${fileUrl}" alt="${title}" loading="lazy" style="max-width: 100%; max-height: 90vh; object-fit: contain;">`;
             } else {
-                caption.textContent = `${gallery.charAt(0).toUpperCase() + gallery.slice(1)} Item ${index + 1}`;
+                // For other links, open in new tab
+                window.open(fileUrl, '_blank');
+                return;
             }
             
             lightbox.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
             document.getElementById('lightbox').classList.add('hidden');
-            document.body.style.overflow = 'auto';
         }
 
-        function nextImage() {
-            currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxGallery.length;
-            openLightbox('crafts', currentLightboxIndex);
+        // Admin Panel Functions
+        function openAdminPanel() {
+            if (!isLoggedIn) {
+                alert('Please login first to access admin panel');
+                return;
+            }
+            document.getElementById('adminPanel').classList.remove('hidden');
+            populateAdminContentList();
         }
 
-        function prevImage() {
-            currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxGallery.length) % currentLightboxGallery.length;
-            openLightbox('crafts', currentLightboxIndex);
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').classList.add('hidden');
         }
 
-        // Craft Gallery Functions
-        function filterCrafts(category) {
-            const items = document.querySelectorAll('.craft-item');
-            const buttons = document.querySelectorAll('.craft-filter-btn');
+        function populateAdminContentList() {
+            const contentList = document.getElementById('adminContentList');
+            if (!contentList) return;
             
-            // Update button styles
-            buttons.forEach(btn => {
-                btn.classList.remove('active', 'bg-deep-lavender', 'text-white');
-                btn.classList.add('bg-white/70', 'text-deep-lavender');
-            });
-            event.target.classList.remove('bg-white/70', 'text-deep-lavender');
-            event.target.classList.add('active', 'bg-deep-lavender', 'text-white');
-            
-            // Filter items
-            items.forEach(item => {
-                if (category === 'all' || item.dataset.category === category) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+            contentList.innerHTML = portfolioData.map(item => `
+                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <span class="font-medium">${item.title}</span>
+                        <span class="text-sm text-gray-500 ml-2">(${item.category})</span>
+                    </div>
+                    <button onclick="deleteContent(${item.id})" class="text-red-500 hover:text-red-700 px-3 py-1 rounded">Delete</button>
+                </div>
+            `).join('');
         }
 
-        function addCraftItem() {
-            if (!isEditMode) return;
-            
-            const title = prompt('Enter craft title:');
-            if (!title) return;
-            
-            const description = prompt('Enter description:');
-            const category = prompt('Enter category (cards/business/custom):') || 'custom';
-            
-            // Add to data
-            portfolioData.crafts.push({
+        function addNewContent() {
+            const title = document.getElementById('adminTitle').value.trim();
+            const category = document.getElementById('adminCategory').value;
+            const description = document.getElementById('adminDescription').value.trim();
+            const fileUrl = document.getElementById('adminFileUrl').value.trim();
+            const tagsInput = document.getElementById('adminTags').value.trim();
+            const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+            const thumbnail = document.getElementById('adminThumbnail').value.trim() || '📄';
+
+            if (!title || !description) {
+                alert('Please fill in title and description');
+                return;
+            }
+
+            const newItem = {
+                id: Date.now(),
                 title: title,
-                description: description,
                 category: category,
-                image: null
-            });
+                thumbnail: thumbnail,
+                fileUrl: fileUrl,
+                description: description,
+                date: new Date().toISOString().split('T')[0],
+                tags: tags,
+                visible: true
+            };
+
+            portfolioData.push(newItem);
             
-            renderCrafts();
-            alert('Craft item added! You can now upload an image for it.');
+            // Clear form
+            document.getElementById('adminTitle').value = '';
+            document.getElementById('adminDescription').value = '';
+            document.getElementById('adminFileUrl').value = '';
+            document.getElementById('adminTags').value = '';
+            document.getElementById('adminThumbnail').value = '';
+
+            // Refresh portfolio
+            renderPortfolioContent();
+            populateAdminContentList();
+            alert('Content added successfully! Changes are live on your portfolio.');
         }
 
-        function editCraftItem(button) {
-            if (!isEditMode) return;
-            
-            const item = button.closest('.craft-item');
-            const titleEl = item.querySelector('h3');
-            const descEl = item.querySelector('p');
-            
-            const newTitle = prompt('Edit title:', titleEl.textContent);
-            const newDesc = prompt('Edit description:', descEl.textContent);
-            
-            if (newTitle) titleEl.textContent = newTitle;
-            if (newDesc) descEl.textContent = newDesc;
-        }
-
-        function handleCraftUpload(event) {
-            const files = event.target.files;
-            if (files.length === 0) return;
-            
-            for (let file of files) {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        // In a real app, this would upload to server
-                        alert(`Image "${file.name}" uploaded successfully! In a real application, this would be saved to your server.`);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        }
-
-        function uploadCraftImages() {
-            document.getElementById('craftFileInput').click();
-        }
-
-        // Blog Functions
-        function addBlogItem() {
-            if (!isEditMode) return;
-            
-            const title = prompt('Enter blog/project title:');
-            if (!title) return;
-            
-            const description = prompt('Enter description:');
-            const url = prompt('Enter URL (optional):');
-            
-            alert(`Blog item "${title}" added successfully!`);
-        }
-
-        function editBlogItem(button) {
-            if (!isEditMode) return;
-            
-            const item = button.closest('.blog-item');
-            const titleEl = item.querySelector('h3');
-            const descEl = item.querySelector('p');
-            const linkEl = item.querySelector('.editable-link');
-            
-            const newTitle = prompt('Edit title:', titleEl.textContent);
-            const newDesc = prompt('Edit description:', descEl.textContent);
-            const newUrl = prompt('Edit URL:', linkEl.getAttribute('data-url'));
-            
-            if (newTitle) titleEl.textContent = newTitle;
-            if (newDesc) descEl.textContent = newDesc;
-            if (newUrl) {
-                linkEl.setAttribute('href', newUrl);
-                linkEl.setAttribute('data-url', newUrl);
-            }
-        }
-
-        function uploadBlogFile(button) {
-            if (!isEditMode) return;
-            document.getElementById('uploadModal').classList.remove('hidden');
-        }
-
-        function closeUploadModal() {
-            document.getElementById('uploadModal').classList.add('hidden');
-        }
-
-        function handleModalUpload() {
-            const files = document.getElementById('modalFileInput').files;
-            if (files.length === 0) {
-                alert('Please select files to upload.');
+        function deleteContent(id) {
+            if (!confirm('Are you sure you want to delete this content?')) {
                 return;
             }
             
-            for (let file of files) {
-                // In a real app, this would upload to server
-                alert(`File "${file.name}" uploaded successfully! In a real application, this would be saved to your server.`);
-            }
-            
-            closeUploadModal();
-        }
-
-        // Enhanced Edit Mode Functions
-        function toggleEditMode() {
-            if (!isLoggedIn) return;
-            
-            isEditMode = !isEditMode;
-            const editBtn = document.getElementById('editBtn');
-            
-            if (isEditMode) {
-                editBtn.textContent = 'Save Changes';
-                editBtn.classList.remove('bg-deep-rose');
-                editBtn.classList.add('bg-green-600');
-                document.querySelectorAll('.edit-only').forEach(el => el.classList.remove('hidden'));
-                document.querySelectorAll('.editable').forEach(el => {
-                    el.contentEditable = true;
-                    el.classList.add('edit-mode');
-                });
-            } else {
-                editBtn.textContent = 'Edit Mode';
-                editBtn.classList.remove('bg-green-600');
-                editBtn.classList.add('bg-deep-rose');
-                document.querySelectorAll('.edit-only').forEach(el => el.classList.add('hidden'));
-                document.querySelectorAll('.editable').forEach(el => {
-                    el.contentEditable = false;
-                    el.classList.remove('edit-mode');
-                });
-                saveChanges();
+            const index = portfolioData.findIndex(item => item.id === id);
+            if (index > -1) {
+                portfolioData.splice(index, 1);
+                populateAdminContentList();
+                renderPortfolioContent();
+                alert('Content deleted successfully!');
             }
         }
 
-        function saveChanges() {
-            // In a real application, this would save to a database
-            const data = {
-                name: document.querySelector('[data-field="name"]')?.textContent,
-                tagline: document.querySelector('[data-field="tagline"]')?.textContent,
-                about: document.querySelector('[data-field="about"]')?.textContent,
-                email: document.querySelector('[data-field="email"]')?.textContent,
-                linkedin: document.querySelector('[data-field="linkedin"]')?.textContent
-            };
-            
-            localStorage.setItem('portfolioData', JSON.stringify(data));
-            alert('Changes saved successfully!');
-        }
+        // Handle file upload
+        document.addEventListener('change', function(e) {
+            if (e.target.id === 'adminFileUpload') {
+                const file = e.target.files[0];
+                if (file) {
+                    // In a real application, you would upload this to a server
+                    // For demo purposes, we'll create a data URL for images
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.getElementById('adminFileUrl').value = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        // For non-image files, you would typically upload to a server
+                        // and get back a URL. For demo, we'll use a placeholder
+                        document.getElementById('adminFileUrl').value = `https://example.com/uploads/${file.name}`;
+                    }
+                }
+            }
+        });
 
-        function loadSavedData() {
-            const saved = localStorage.getItem('portfolioData');
-            if (saved) {
-                const data = JSON.parse(saved);
-                Object.keys(data).forEach(key => {
-                    const element = document.querySelector(`[data-field="${key}"]`);
-                    if (element && data[key]) {
-                        element.textContent = data[key];
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            
+            // Show home page by default
+            showPage('home');
+            
+            // Pre-render all content
+            setTimeout(() => {
+                renderPortfolioContent();
+                renderCertificatesContent();
+            }, 100);
+            
+            // Close lightbox on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            });
+            
+            // Close lightbox when clicking outside content
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox) {
+                lightbox.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeLightbox();
                     }
                 });
             }
-        }
-
-        // Enhanced Content Management
-        function addTestimonial() {
-            if (!isEditMode) return;
             
-            const name = prompt('Enter person\'s name:');
-            if (!name) return;
-            
-            const company = prompt('Enter company/position:');
-            const testimonial = prompt('Enter testimonial text:');
-            
-            if (testimonial) {
-                const testimonialsList = document.getElementById('testimonialsList');
-                const newTestimonial = document.createElement('div');
-                newTestimonial.className = 'bg-white rounded-lg p-6 shadow-md';
-                newTestimonial.innerHTML = `
-                    <p class="text-gray-700 mb-4 italic">"${testimonial}"</p>
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-gradient-to-r from-lavender to-rose-pink rounded-full flex items-center justify-center text-white font-bold mr-4">${name.charAt(0)}</div>
-                        <div>
-                            <h4 class="font-semibold text-deep-lavender">${name}</h4>
-                            <p class="text-gray-600 text-sm">${company}</p>
-                        </div>
-                    </div>
-                `;
-                testimonialsList.appendChild(newTestimonial);
-                alert(`Testimonial from ${name} added successfully!`);
-            }
-        }
-
-        function downloadResume() {
-            // In a real application, this would download the actual resume file
-            alert('Resume download feature ready! Please upload your resume file when in edit mode to enable downloads.');
-        }
-
-        // Mobile-friendly touch events
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        document.addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-            
-            if (Math.abs(diff) > swipeThreshold) {
-                if (document.getElementById('lightbox').classList.contains('hidden')) return;
-                
-                if (diff > 0) {
-                    nextImage(); // Swipe left - next image
-                } else {
-                    prevImage(); // Swipe right - previous image
-                }
-            }
-        }
-
-        // Keyboard navigation for lightbox
-        document.addEventListener('keydown', function(e) {
-            if (!document.getElementById('lightbox').classList.contains('hidden')) {
-                if (e.key === 'ArrowLeft') prevImage();
-                if (e.key === 'ArrowRight') nextImage();
-                if (e.key === 'Escape') closeLightbox();
-            }
-        });
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            showPage('home');
-            loadSavedData();
-            
-            // Add drag and drop functionality
-            const uploadAreas = document.querySelectorAll('.file-upload');
-            uploadAreas.forEach(area => {
-                area.addEventListener('dragover', function(e) {
+            // Prevent default anchor behavior
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    this.classList.add('dragover');
-                });
-                
-                area.addEventListener('dragleave', function(e) {
-                    e.preventDefault();
-                    this.classList.remove('dragover');
-                });
-                
-                area.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    this.classList.remove('dragover');
-                    const files = e.dataTransfer.files;
-                    handleFileUpload(files);
                 });
             });
         });
-
-        function handleFileUpload(files) {
-            for (let file of files) {
-                if (file.type.startsWith('image/') || file.type === 'application/pdf') {
-                    alert(`File "${file.name}" ready for upload! In a real application, this would be saved to your server.`);
-                }
-            }
-        }
-
-        // Creative Works Functions
-        function addCreativeItem() {
-            if (!isEditMode) return;
-            
-            const title = prompt('Enter creative work title:');
-            if (!title) return;
-            
-            const description = prompt('Enter description:');
-            const url = prompt('Enter URL (optional):');
-            
-            const creativeList = document.getElementById('creativeList');
-            const newItem = document.createElement('div');
-            newItem.className = 'creative-item bg-white rounded-lg p-6 shadow-md';
-            newItem.innerHTML = `
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex-1">
-                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">${title}</h3>
-                        <p class="editable text-gray-600 mb-3" contenteditable="false">${description || 'Add description...'}</p>
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">New Project</span>
-                        </div>
-                        <div class="creative-gallery grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                            <div class="gallery-item aspect-square bg-gradient-to-br from-lavender to-rose-pink rounded-lg flex items-center justify-center cursor-pointer">
-                                <div class="text-center text-white">
-                                    <div class="text-2xl mb-1">📁</div>
-                                    <div class="text-xs">Upload Image</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="editCreativeItem(this)" class="edit-only ml-4 text-deep-rose hover:underline">Edit</button>
-                </div>
-                <div class="flex gap-4">
-                    <a href="${url || '#'}" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="${url || '#'}">View Project →</a>
-                    <button onclick="uploadItemFiles(this, 'creative')" class="edit-only bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload Files</button>
-                    <button onclick="removeCreativeItem(this)" class="edit-only bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Remove</button>
-                </div>
-            `;
-            creativeList.appendChild(newItem);
-            alert(`Creative work "${title}" added successfully!`);
-        }
-
-        function editCreativeItem(button) {
-            if (!isEditMode) return;
-            
-            const item = button.closest('.creative-item');
-            const titleEl = item.querySelector('h3');
-            const descEl = item.querySelector('p');
-            const linkEl = item.querySelector('.editable-link');
-            
-            const newTitle = prompt('Edit title:', titleEl.textContent);
-            const newDesc = prompt('Edit description:', descEl.textContent);
-            const newUrl = prompt('Edit URL:', linkEl.getAttribute('data-url'));
-            
-            if (newTitle) titleEl.textContent = newTitle;
-            if (newDesc) descEl.textContent = newDesc;
-            if (newUrl) {
-                linkEl.setAttribute('href', newUrl);
-                linkEl.setAttribute('data-url', newUrl);
-            }
-        }
-
-        function removeCreativeItem(button) {
-            if (!isEditMode) return;
-            
-            const item = button.closest('.creative-item');
-            const title = item.querySelector('h3').textContent;
-            
-            if (confirm(`Are you sure you want to remove "${title}"?`)) {
-                item.remove();
-                alert('Creative work removed successfully!');
-            }
-        }
-
-        function uploadCreativeFiles() {
-            if (!isEditMode) return;
-            document.getElementById('creativeFileInput').click();
-        }
-
-        function handleCreativeUpload(event) {
-            const files = event.target.files;
-            if (files.length === 0) return;
-            
-            for (let file of files) {
-                if (file.type.startsWith('image/') || file.type === 'application/pdf') {
-                    alert(`File "${file.name}" uploaded successfully! In a real application, this would be saved to your server.`);
-                }
-            }
-        }
-
-        // Competition Functions
-        function addCompetitionItem() {
-            if (!isEditMode) return;
-            
-            const title = prompt('Enter competition title:');
-            if (!title) return;
-            
-            const description = prompt('Enter description:');
-            const url = prompt('Enter URL (optional):');
-            
-            const competitionsList = document.getElementById('competitionsList');
-            const newItem = document.createElement('div');
-            newItem.className = 'competition-item bg-white rounded-lg p-6 shadow-md';
-            newItem.innerHTML = `
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex-1">
-                        <h3 class="editable font-semibold text-deep-lavender mb-2 text-xl" contenteditable="false">${title}</h3>
-                        <p class="editable text-gray-600 mb-3" contenteditable="false">${description || 'Add description...'}</p>
-                        <div class="flex flex-wrap gap-2 mb-3">
-                            <span class="bg-lavender text-deep-lavender px-3 py-1 rounded-full text-sm">New Competition</span>
-                        </div>
-                        <div class="competition-gallery grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
-                            <div class="gallery-item aspect-video bg-gradient-to-br from-lavender to-rose-pink rounded-lg flex items-center justify-center cursor-pointer">
-                                <div class="text-center text-white">
-                                    <div class="text-2xl mb-1">📁</div>
-                                    <div class="text-xs">Upload File</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="editCompetitionItem(this)" class="edit-only ml-4 text-deep-rose hover:underline">Edit</button>
-                </div>
-                <div class="flex gap-4">
-                    <a href="${url || '#'}" target="_blank" class="editable-link bg-deep-rose text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors" data-url="${url || '#'}">View Details →</a>
-                    <button onclick="uploadItemFiles(this, 'competition')" class="edit-only bg-deep-lavender text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">Upload Files</button>
-                    <button onclick="removeCompetitionItem(this)" class="edit-only bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Remove</button>
-                </div>
-            `;
-            competitionsList.appendChild(newItem);
-            alert(`Competition "${title}" added successfully!`);
-        }
-
-        function editCompetitionItem(button) {
-            if (!isEditMode) return;
-            
-            const item = button.closest('.competition-item');
-            const titleEl = item.querySelector('h3');
-            const descEl = item.querySelector('p');
-            const linkEl = item.querySelector('.editable-link');
-            
-            const newTitle = prompt('Edit title:', titleEl.textContent);
-            const newDesc = prompt('Edit description:', descEl.textContent);
-            const newUrl = prompt('Edit URL:', linkEl.getAttribute('data-url'));
-            
-            if (newTitle) titleEl.textContent = newTitle;
-            if (newDesc) descEl.textContent = newDesc;
-            if (newUrl) {
-                linkEl.setAttribute('href', newUrl);
-                linkEl.setAttribute('data-url', newUrl);
-            }
-        }
-
-        function removeCompetitionItem(button) {
-            if (!isEditMode) return;
-            
-            const item = button.closest('.competition-item');
-            const title = item.querySelector('h3').textContent;
-            
-            if (confirm(`Are you sure you want to remove "${title}"?`)) {
-                item.remove();
-                alert('Competition removed successfully!');
-            }
-        }
-
-        function uploadCompetitionFiles() {
-            if (!isEditMode) return;
-            document.getElementById('competitionFileInput').click();
-        }
-
-        function handleCompetitionUpload(event) {
-            const files = event.target.files;
-            if (files.length === 0) return;
-            
-            for (let file of files) {
-                if (file.type.startsWith('image/') || file.type === 'application/pdf') {
-                    alert(`File "${file.name}" uploaded successfully! In a real application, this would be saved to your server.`);
-                }
-            }
-        }
-
-        // Universal file upload for individual items
-        function uploadItemFiles(button, category) {
-            if (!isEditMode) return;
-            
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.multiple = true;
-            input.accept = 'image/*,.pdf,.doc,.docx,.ppt,.pptx';
-            
-            input.onchange = function(e) {
-                const files = e.target.files;
-                for (let file of files) {
-                    alert(`File "${file.name}" uploaded to ${category} item! In a real application, this would be saved to your server.`);
-                }
-            };
-            
-            input.click();
-        }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97079221418bd9eb',t:'MTc1NTQxNjkyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971927899359dd0d',t:'MTc1NTYwMTMwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
